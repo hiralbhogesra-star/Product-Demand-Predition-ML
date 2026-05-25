@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Demand Prediction</title>
+
+    <style>
+        body { font-family: Arial; background: #f4f4f4; }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            margin-top: 50px;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+        button {
+            background: green;
+            color: white;
+            border: none;
+        }
+
+        h2 { text-align: center; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>Product Demand Prediction</h2>
+
+    <form action="/predict" method="post">
+
+        <!-- Year -->
+        <label for="year">Year</label>
+        <input type="number"
+               id="year"
+               name="year"
+               placeholder="Year (e.g. 2026)"
+               min="2026"
+               max="2035"
+               required>
+
+        <!-- Month -->
+        <label for="month">Month</label>
+        <input type="number"
+               id="month"
+               name="month_num"
+               placeholder="Month (1-12)"
+               min="1"
+               max="12"
+               required>
+
+        <!-- Product -->
+        <label for="product">Product</label>
+        <select name="product_id" id="product" required>
+            <option value="">Select Product</option>
+            <option value="1001">1001 - Milk</option>
+            <option value="1002">1002 - Bread</option>
+            <option value="1003">1003 - Rice</option>
+            <option value="1004">1004 - Sugar</option>
+            <option value="1005">1005 - Oil</option>
+        </select>
+
+        <!-- Store ID -->
+        <label for="store">Store ID</label>
+        <input type="number"
+               id="store"
+               name="store_id"
+               placeholder="Store ID"
+               min="1"
+               max="100"
+               required>
+
+        <!-- Price -->
+        <label for="price">Product Price</label>
+        <input type="number"
+               id="price"
+               name="price"
+               placeholder="Price"
+               step="0.01"
+               min="0"
+               max="10000"
+               required>
+
+        <!-- Holiday -->
+        <label for="holiday">Holiday</label>
+        <select name="holiday" id="holiday" required>
+            <option value="">Select</option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
+        <button type="submit">Predict Demand</button>
+
+    </form>
+
+   {% if prediction %}
+    <div class="result-box">
+        <h3>Selected Product: {{ selected_product }}</h3>
+        <p><strong>Unit:</strong> {{ unit }}</p>
+        <h3>Predicted Demand: {{ prediction }}</h3>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- JavaScript Validation -->
+<script>
+document.querySelector("form").addEventListener("submit", function(e){
+
+    let year = document.getElementById("year").value;
+    let month = document.getElementById("month").value;
+    let price = document.getElementById("price").value;
+    let store = document.getElementById("store").value;
+
+    if(year < 2026 || year > 2035){
+        alert("Please enter a valid year between 2026 and 2035");
+        e.preventDefault();
+        return;
+    }
+
+    if(month < 1 || month > 12){
+        alert("Please enter month between 1 and 12");
+        e.preventDefault();
+        return;
+    }
+
+    if(store < 1 || store > 100){
+        alert("Please enter valid Store ID between 1 and 100");
+        e.preventDefault();
+        return;
+    }
+
+    if(price < 0 || price > 10000){
+        alert("Please enter valid price between 0 and 10000");
+        e.preventDefault();
+        return;
+    }
+
+});
+</script>
+
+</body>
+</html>
